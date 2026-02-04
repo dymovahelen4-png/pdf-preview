@@ -4,63 +4,24 @@
   <meta charset="utf-8" />
   <title>PDF preview</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- PDF.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.4.624/pdf.min.js"></script>
-
   <style>
-    body {
+    html, body {
       margin: 0;
+      height: 100%;
       background: #f6f8fb;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont;
     }
-    #viewer {
-      max-width: 900px;
-      margin: 40px auto;
-    }
-    canvas {
+    iframe {
       width: 100%;
-      height: auto;
-      display: block;
-      margin-bottom: 24px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.08);
-      background: #fff;
+      height: 100vh;
+      border: none;
     }
   </style>
 </head>
 <body>
 
-<div id="viewer"></div>
-
-<script>
-  const url = 'preview.pdf';
-
-  const { pdfjsLib } = globalThis;
-  pdfjsLib.GlobalWorkerOptions.workerSrc =
-    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.4.624/pdf.worker.min.js';
-
-  pdfjsLib.getDocument(url).promise.then(pdf => {
-    const container = document.getElementById('viewer');
-
-    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-      pdf.getPage(pageNum).then(page => {
-        const viewport = page.getViewport({ scale: 1.5 });
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-
-        container.appendChild(canvas);
-
-        page.render({
-          canvasContext: context,
-          viewport: viewport
-        });
-      });
-    }
-  });
-</script>
+<iframe
+  src="https://unpkg.com/pdfjs-dist@5.4.624/web/viewer.html?file=https://dymovahelen4-png.github.io/pdf-preview/preview.pdf">
+</iframe>
 
 </body>
 </html>
