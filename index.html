@@ -5,7 +5,7 @@
   <title>PDF preview</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- PDF.js CDN -->
+  <!-- PDF.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.4.624/pdf.min.js"></script>
 
   <style>
@@ -22,7 +22,7 @@
       width: 100%;
       height: auto;
       display: block;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       box-shadow: 0 8px 24px rgba(0,0,0,.08);
       background: #fff;
     }
@@ -33,12 +33,15 @@
 <div id="viewer"></div>
 
 <script>
-  const url = 'preview.pdf'; // ← сюда потом положим PDF
+  const url = 'preview.pdf';
 
-  const container = document.getElementById('viewer');
-  const pdfjsLib = window['pdfjs-dist/build/pdf'];
+  const { pdfjsLib } = globalThis;
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.4.624/pdf.worker.min.js';
 
   pdfjsLib.getDocument(url).promise.then(pdf => {
+    const container = document.getElementById('viewer');
+
     for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
       pdf.getPage(pageNum).then(page => {
         const viewport = page.getViewport({ scale: 1.5 });
@@ -50,7 +53,10 @@
 
         container.appendChild(canvas);
 
-        page.render({ canvasContext: context, viewport });
+        page.render({
+          canvasContext: context,
+          viewport: viewport
+        });
       });
     }
   });
