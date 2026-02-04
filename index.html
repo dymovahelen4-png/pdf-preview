@@ -2,10 +2,59 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PDF preview</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PDF.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.4.624/pdf.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      background: #f6f8fb;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont;
+    }
+    #viewer {
+      max-width: 900px;
+      margin: 40px auto;
+    }
+    canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.08);
+      background: #fff;
+    }
+  </style>
 </head>
 <body>
-  <p>OK</p>
+
+<div id="viewer"></div>
+
+<script>
+  const url = 'preview.pdf'; // ← сюда потом положим PDF
+
+  const container = document.getElementById('viewer');
+  const pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+  pdfjsLib.getDocument(url).promise.then(pdf => {
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      pdf.getPage(pageNum).then(page => {
+        const viewport = page.getViewport({ scale: 1.5 });
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        container.appendChild(canvas);
+
+        page.render({ canvasContext: context, viewport });
+      });
+    }
+  });
+</script>
+
 </body>
 </html>
