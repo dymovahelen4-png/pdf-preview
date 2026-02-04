@@ -4,9 +4,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>PDF preview</title>
-  <meta http-equiv="refresh" content="0; url=https://mozilla.github.io/pdf.js/web/viewer.html?file=https%3A%2F%2Fraw.githubusercontent.com%2Fdymovahelen4-png%2Fpdf-preview%2Fmain%2Fpreview.pdf">
 </head>
 <body>
-  <p>Открываю PDF…</p>
+<script>
+  // по умолчанию, если параметр не передан
+  const p = new URLSearchParams(location.search).get("p") || "pdf/test-1.pdf";
+
+  const raw =
+    "https://raw.githubusercontent.com/dymovahelen4-png/pdf-preview/main/" + p;
+
+  const viewer =
+    "https://mozilla.github.io/pdf.js/web/viewer.html?file=" +
+    encodeURIComponent(raw);
+
+  location.replace(viewer);
+</script>
 </body>
 </html>
