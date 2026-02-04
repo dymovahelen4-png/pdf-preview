@@ -7,11 +7,12 @@
 </head>
 <body>
 <script>
-  // по умолчанию, если параметр не передан
-  const p = new URLSearchParams(location.search).get("p") || "pdf/test-1.pdf";
+  // имя файла передаётся через ?p=
+  // пример: ?p=test-1.pdf
+  const p = new URLSearchParams(location.search).get("p") || "test-1.pdf";
 
   const raw =
-    "https://raw.githubusercontent.com/dymovahelen4-png/pdf-preview/main/" + p;
+    "https://raw.githubusercontent.com/dymovahelen4-png/pdf-preview/main/pdf/" + p;
 
   const viewer =
     "https://mozilla.github.io/pdf.js/web/viewer.html?file=" +
